@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Domain.Entities
 {
-    public class Transaction:Common
+    public partial class Transaction:Common
     {
         public int UserId {  get; set; }
         public int TransactionTypeId { get; set; }
@@ -14,7 +14,6 @@ namespace ExpenseTracker.Domain.Entities
         public string Description { get; set; } = string.Empty;
         public decimal Dr { get; set; }
         public decimal Cr { get; set; }
-        public decimal Balance { get; set; }
         public DateTime TransactedOn { get; set; }
     }
 }

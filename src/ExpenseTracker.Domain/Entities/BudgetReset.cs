@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Domain.Entities
 {
-    public class PaymentType:Common
+    public class BudgetReset:Common
     {
-        public string Type { get; set; }= string.Empty;
-        public string AccountName { get; set; } = string.Empty;
+        public int UserId { get; set; }
+        public DateTime ResetDate { get; set; }
     }
 }
