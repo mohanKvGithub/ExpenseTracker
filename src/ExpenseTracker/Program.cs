@@ -1,28 +1,36 @@
+using ExpenseTracker.Application.DTO;
+using ExpenseTracker.Extension;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+var appSettings = builder.Configuration.GetSection("AppSettings").Get<AppSettingDto>();
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddSqlServer(builder.Configuration);
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddRepositoryServices();
+builder.Services.AddAuthentication(builder.Configuration,appSettings);
+builder.Services.AddApplicationServices();
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Home}/{action=Login}/{id?}")
     .WithStaticAssets();
 
 

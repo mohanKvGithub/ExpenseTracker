@@ -1,0 +1,21 @@
+﻿
+using ExpenseTracker.Domain.Entities;
+using ExpenseTracker.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
+namespace ExpenseTracker.Infrastructure.Data.Repository;
+
+public class TransactionRepository(ApplicationDbContext db) : ITransactionRepository
+{
+    public async Task<int> AddTransactionAysnc(Transaction transaction, CancellationToken cancellationToken)
+    {
+        await db.Transaction.AddAsync(transaction, cancellationToken);
+        await db.SaveChangesAsync(cancellationToken);
+        return transaction.Id;
+    }
+    public async Task<List<Transaction>> GetTransactionsAsync(CancellationToken cancellationToken)
+    {
+        return await db.Transaction
+            .Where(x=>!x.IsDeleted)
+            .ToListAsync(cancellationToken);
+    }
+}

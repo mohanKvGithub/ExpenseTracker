@@ -63,3 +63,7 @@ Create Table [Transaction](
 	constraint FK_Transaction_TransactionType foreign key(TransactionTypeId) references [TransactionType](Id),
 	constraint FK_Transaction_PaymentType foreign key(PaymentTypeId) references [PaymentType](Id)
 )
+GO
+alter table [User] add  Email varchar(20)
+GO
+alter table [Transaction] add  TransactedOn datetime
