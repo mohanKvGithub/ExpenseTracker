@@ -13,5 +13,8 @@ namespace ExpenseTracker.Domain.Entities
         public string Password { get; set; }= string.Empty;
         public string Salt { get; set; }= string.Empty;
         public string Email { get; set; }= string.Empty;
+        public virtual ICollection<Budget> Budgets { get; set; }
+        public virtual ICollection<BudgetReset> BudgetResets { get; set; }
+        public virtual ICollection<Transaction> Transactions { get; set; }
     }
 }

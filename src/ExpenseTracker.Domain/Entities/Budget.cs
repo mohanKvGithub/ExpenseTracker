@@ -12,5 +12,6 @@ namespace ExpenseTracker.Domain.Entities
         public decimal Amount { get; set; }
         public string Reason { get; set; } = string.Empty;
         public bool IsActive { get; set; }
+        public virtual User User { get; set; }
     }
 }

@@ -15,5 +15,8 @@ namespace ExpenseTracker.Domain.Entities
         public decimal Dr { get; set; }
         public decimal Cr { get; set; }
         public DateTime TransactedOn { get; set; }
+        public virtual TransactionType TransactionType { get; set; } = null!;
+        public virtual PaymentType PaymentType { get; set; } = null!;
+        public virtual User User { get; set; } = null!;
     }
 }

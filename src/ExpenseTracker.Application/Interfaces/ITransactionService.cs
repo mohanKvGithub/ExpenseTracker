@@ -9,8 +9,8 @@ namespace ExpenseTracker.Application.Interfaces
 {
     public interface ITransactionService
     {
-        Task<ServiceResponseDto<int>> AddTransactionAsync(TransactionDto transactionDto,CancellationToken cancellationToken);
-        Task<ServiceResponseDto<List<TransactionDto>>> GetTransactionsAsync(CancellationToken cancellationToken);
-        Task<ServiceResponseDto<DashboardStatDto>> GetStatAsync(CancellationToken cancellationToken);
+        Task<int> AddTransactionAsync(TransactionDto transactionDto,CancellationToken cancellationToken);
+        Task<List<TransactionDto>> GetTransactionsAsync(CancellationToken cancellationToken);
+        Task<DashboardStatDto> GetStatAsync(CancellationToken cancellationToken);
     }
 }

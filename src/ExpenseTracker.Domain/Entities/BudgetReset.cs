@@ -10,5 +10,6 @@ namespace ExpenseTracker.Domain.Entities
     {
         public int UserId { get; set; }
         public DateTime ResetDate { get; set; }
+        public virtual User User { get; set; }
     }
 }

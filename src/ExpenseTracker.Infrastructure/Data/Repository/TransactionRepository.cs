@@ -17,6 +17,8 @@ public class TransactionRepository(ApplicationDbContext db) : ITransactionReposi
     {
         return await db.Transaction
             .Where(x=>!x.IsDeleted)
+            .Include(x=>x.TransactionType)
+            .Include(x=>x.PaymentType)
             .ToListAsync(cancellationToken);
     }
     public async Task<bool> UpdateTransactionAsyn(Transaction transaction, CancellationToken cancellationToken)

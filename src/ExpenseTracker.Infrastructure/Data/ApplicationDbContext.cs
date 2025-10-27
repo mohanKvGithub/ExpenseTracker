@@ -24,6 +24,12 @@ public partial class ApplicationDbContext:DbContext
             entity.Property(e => e.Description).HasMaxLength(200);
             entity.Property(e => e.Dr).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.Cr).HasColumnType("decimal(18, 2)");
+            entity.HasOne(d => d.PaymentType).WithMany(x=>x.Transactions)
+            .HasConstraintName("FK_Transaction_PaymentType");
+            entity.HasOne(d => d.TransactionType).WithMany(x=>x.Transactions)
+            .HasConstraintName("FK_Transaction_TransactionType");
+            entity.HasOne(d => d.User).WithMany(x=>x.Transactions)
+            .HasConstraintName("FK_Transaction_User");
         });
         modelBuilder.Entity<Budget>(entity =>
         {
@@ -31,11 +37,15 @@ public partial class ApplicationDbContext:DbContext
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Reason).HasMaxLength(200);
             entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
+            entity.HasOne(d => d.User).WithMany(x=>x.Budgets)
+            .HasConstraintName("FK_Budget_User");
         });
         modelBuilder.Entity<BudgetReset>(entity =>
         {
             entity.ToTable("BudgetReset");
             entity.HasKey(e => e.Id);
+            entity.HasOne(d => d.User).WithMany(x=>x.BudgetResets)
+            .HasConstraintName("FK_BudgetReset_User");
         });
         modelBuilder.Entity<PaymentType>(entity =>
         {

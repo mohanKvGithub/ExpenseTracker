@@ -10,5 +10,6 @@ namespace ExpenseTracker.Domain.Entities
     {
         public string Type { get; set; }= string.Empty;
         public string AccountName { get; set; } = string.Empty;
+        public virtual ICollection<Transaction> Transactions { get; set; }
     }
 }
