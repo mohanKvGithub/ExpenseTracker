@@ -2,6 +2,7 @@
 using ExpenseTracker.Domain.Entities;
 using ExpenseTracker.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using ExpenseTracker.Application.DTO;
 namespace ExpenseTracker.Infrastructure.Data.Repository;
 
 public class TransactionRepository(ApplicationDbContext db) : ITransactionRepository
@@ -17,5 +18,11 @@ public class TransactionRepository(ApplicationDbContext db) : ITransactionReposi
         return await db.Transaction
             .Where(x=>!x.IsDeleted)
             .ToListAsync(cancellationToken);
+    }
+    public async Task<bool> UpdateTransactionAsyn(Transaction transaction, CancellationToken cancellationToken)
+    {
+        db.Transaction.Update(transaction);
+        await db.SaveChangesAsync(cancellationToken);
+        return true; 
     }
 }

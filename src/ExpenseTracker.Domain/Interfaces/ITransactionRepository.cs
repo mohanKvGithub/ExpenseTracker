@@ -10,5 +10,6 @@ namespace ExpenseTracker.Domain.Interfaces;
 public interface ITransactionRepository
 {
     Task<int> AddTransactionAysnc(Transaction transaction,CancellationToken cancellationToken);
+    Task<bool> UpdateTransactionAsyn(Transaction transaction, CancellationToken cancellationToken);
     Task<List<Transaction>> GetTransactionsAsync(CancellationToken cancellationToken);
 }
