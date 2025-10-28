@@ -1,0 +1,28 @@
+﻿@using ExpenseTracker.Application.DTO;
+@model DashboardStatDto;
+<div class="container-fluid">
+    <div class="row">
+        <div class="col border rounded stat-cont m-2 p-2">
+            <span class="row m-0">Balance</span>
+            <span>@Model.CurrentBalance</span>
+        </div>
+        <div class="col border rounded stat-cont m-2 p-2">
+            <span class="row m-0">Budget Amount</span>
+            <span>@Model.BudgetAmount</span>
+        </div>
+        <div class="col border rounded stat-cont m-2 p-2">
+            <span class="row m-0">Balance After Budget</span>
+            <span>@Model.BalanceAfterBudget</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col border rounded stat-cont m-2 p-2">
+            <span class="row m-0">Total Income</span>
+            <span>@Model.TotalIncome</span>
+        </div>
+        <div class="col border rounded stat-cont m-2 p-2">
+            <span class="row m-0">Total Expense</span>
+            <span>@Model.TotalExpense</span>
+        </div>
+    </div>
+</div>

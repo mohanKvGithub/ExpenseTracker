@@ -12,4 +12,8 @@ public interface ITransactionRepository
     Task<int> AddTransactionAysnc(Transaction transaction,CancellationToken cancellationToken);
     Task<bool> UpdateTransactionAsyn(Transaction transaction, CancellationToken cancellationToken);
     Task<List<Transaction>> GetTransactionsAsync(CancellationToken cancellationToken);
+    Task<List<TransactionType>> GetTransactionTypesAsync(CancellationToken cancellationToken);
+    Task<string> GetTransactionTypeById(int typeId, CancellationToken cancellationToken);
+    Task<List<PaymentType>> GetAccountsAsync(CancellationToken cancellationToken);
+    Task<string> GetAccountById(int typeId, CancellationToken cancellationToken);
 }

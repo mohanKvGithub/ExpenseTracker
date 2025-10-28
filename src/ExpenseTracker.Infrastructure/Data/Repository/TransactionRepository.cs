@@ -27,4 +27,30 @@ public class TransactionRepository(ApplicationDbContext db) : ITransactionReposi
         await db.SaveChangesAsync(cancellationToken);
         return true; 
     }
+    public async Task<List<TransactionType>> GetTransactionTypesAsync(CancellationToken cancellationToken)
+    {
+        return await db.TransactionType.Where(x => !x.IsDeleted)
+             .ToListAsync(cancellationToken);
+    }
+    public async Task<string> GetTransactionTypeById(int typeId, CancellationToken cancellationToken)
+    {
+        var type = await db.TransactionType
+             .Where(x => !x.IsDeleted && x.Id == typeId)
+             .Select(x => x.Type)
+             .FirstOrDefaultAsync(cancellationToken);
+        return type ?? "";
+    }
+    public async Task<List<PaymentType>> GetAccountsAsync(CancellationToken cancellationToken)
+    {
+        return await db.PaymentType.Where(x => !x.IsDeleted)
+             .ToListAsync(cancellationToken);
+    }
+    public async Task<string> GetAccountById(int typeId, CancellationToken cancellationToken)
+    {
+        var type = await db.PaymentType
+                        .Where(x=> !x.IsDeleted && x.Id == typeId)
+                        .Select(x=>x.AccountName)
+                        .FirstOrDefaultAsync(cancellationToken);
+        return type ?? "";
+    }
 }

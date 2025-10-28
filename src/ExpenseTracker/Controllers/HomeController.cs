@@ -11,19 +11,25 @@ namespace ExpenseTracker.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
-    public class HomeController(IUserService userService) : Controller
+    public class HomeController(IUserService userService,ITransactionService transactionService) : Controller
     {
         [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
+        public async Task<IActionResult> Dashboard()
+        {
+            var stats = await transactionService.GetStatAsync(CancellationToken.None);
+            return View(stats);
+        }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> LoginAsync(UserDto userDto)
         {
             var response = await userService.AuthenticateUserAsync(userDto);
-            return Json(new { success = false, message = response.Message });
+            return Json(new { success=response.IsSuccess, message = response.Message });
         }
 
     }

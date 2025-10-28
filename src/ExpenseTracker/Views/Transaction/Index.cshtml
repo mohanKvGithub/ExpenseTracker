@@ -1,0 +1,94 @@
+﻿@using ExpenseTracker.Application.DTO;
+@model TransactionDto;
+<div class="d-flex justify-content-end">
+    <button type="button" class="btn btn-primary p-2" data-bs-toggle="modal" data-bs-target="#transactionModal">Add Transaction</button>
+</div>
+
+<div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Transaction</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-controller="Transaction" asp-action="AddTransaction" method="post" data-ajax="true" data-ajax-method="post" data-ajax-success="success" data-ajax-failure="failure">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Transaction Type</label>
+                        <select asp-for=TransactionTypeId class="form-select">
+                            <option>select type</option>
+                            @foreach (DropDownDto type in ViewBag.TransactionTypes)
+                            {
+                                <option value="@type.Key">@type.Value</option>
+                            }
+                            )
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Payment</label>
+                        <select asp-for=PaymentTypeId class="form-select">
+                            <option>select payment</option>
+                            @foreach (DropDownDto type in ViewBag.AccountTypes)
+                            {
+                                <option value="@type.Key">@type.Value</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <input asp-for="Description" type="text" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Amount</label>
+                        <input asp-for="Amount" type="number" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="mt-5">
+    <table id="Datatable" class="table table-bordered mt-2 mb-2">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        function success(res) {
+                window.alert(res.message);
+        }
+
+        function failure(){
+
+        }
+        $(document).ready(function () {
+            initializeDataTable({tableId:'Datatable',
+                                ajaxUrl: '/Transaction/GetTransactions',
+                                emptyText:'No Transactions found.',
+                                columns:[
+                                    {data:'Description'},
+                                    {data:'Amount'},
+                                    {data:'TransactedOn'},
+                                ],
+                                columnDefs: [
+                                    {
+                                        targets: '_all',      
+                                        width: '33.33%',
+                                        className: 'text-start align-middle',
+                                    }
+                                ]
+            });
+        });
+    </script>
+}

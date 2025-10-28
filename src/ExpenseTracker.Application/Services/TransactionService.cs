@@ -2,14 +2,15 @@
 using ExpenseTracker.Application.DTO;
 using ExpenseTracker.Domain.Entities;
 using ExpenseTracker.Domain.Interfaces;
+using TCW.Utility;
 
 namespace ExpenseTracker.Application.Services
 {
-    public class TransactionService(ITransactionTypeRepository transactionTypeRepository,ITransactionRepository transactionRepository):ITransactionService
+    public class TransactionService(ITransactionRepository transactionRepository,UtilsService utilsService):ITransactionService
     {
-        public async Task<int> AddTransactionAsync(TransactionDto transactionDto, CancellationToken cancellationToken)
+        public async Task<ServiceResponseDto<int>> AddTransactionAsync(TransactionDto transactionDto, CancellationToken cancellationToken)
         {
-            var transactionType = await transactionTypeRepository.GetTransactionTypeById(transactionDto.TransactionTypeId,cancellationToken);
+            var transactionType = await transactionRepository.GetTransactionTypeById(transactionDto.TransactionTypeId,cancellationToken);
             var transaction = new Transaction
             {
                 TransactionTypeId=transactionDto.TransactionTypeId,
@@ -21,8 +22,15 @@ namespace ExpenseTracker.Application.Services
                 CreatedOn=DateTime.UtcNow,
                 UpdatedOn=DateTime.UtcNow,
                 IsDeleted=false,
+                UserId=utilsService.CurrentUserId
             };
-           return await transactionRepository.AddTransactionAysnc(transaction,cancellationToken);
+           var id= await transactionRepository.AddTransactionAysnc(transaction,cancellationToken);
+            return new ServiceResponseDto<int>
+            {
+                IsSuccess = true,
+                Data = id,
+                Message = "Transaction Saved Successfully"
+            };
         }
         public async Task<List<TransactionDto>> GetTransactionsAsync(CancellationToken cancellationToken)
         {
@@ -58,6 +66,24 @@ namespace ExpenseTracker.Application.Services
                 TotalExpense = totalExpense,
                 BudgetAmount = budgetAmount
             };
+        }
+        public async Task<List<DropDownDto>> GetTransactionTypes(CancellationToken cancellationToken)
+        {
+            var types= await transactionRepository.GetTransactionTypesAsync(cancellationToken);
+            return types.Select(x=>new DropDownDto
+            {
+                Key=x.Id,
+                Value=x.Type
+            }).ToList();
+        }
+        public async Task<List<DropDownDto>> GetAccountsTypes(CancellationToken cancellationToken)
+        {
+            var types= await transactionRepository.GetAccountsAsync(cancellationToken);
+            return types.Select(x=>new DropDownDto
+            {
+                Key=x.Id,
+                Value=x.AccountName
+            }).ToList();
         }
     }
 }

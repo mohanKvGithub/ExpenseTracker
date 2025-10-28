@@ -67,3 +67,13 @@ GO
 alter table [User] add  Email varchar(20)
 GO
 alter table [Transaction] add  TransactedOn datetime
+GO
+INSERT INTO TransactionType([Type],[CreatedOn],[UpdatedOn],[IsDeleted]) VALUES ('Income',GETDATE(),GETDATE(),0);
+GO
+INSERT INTO TransactionType([Type],[CreatedOn],[UpdatedOn],[IsDeleted]) VALUES ('Expense',GETDATE(),GETDATE(),0);
+GO
+INSERT INTO PaymentType([AccountName],[Type],[CreatedOn],[UpdatedOn],[IsDeleted]) VALUES ('Cash','Cash',GETDATE(),GETDATE(),0);
+GO
+INSERT INTO PaymentType([AccountName],[Type],[CreatedOn],[UpdatedOn],[IsDeleted]) VALUES ('HDFC','Bank',GETDATE(),GETDATE(),0);
+GO
+INSERT INTO PaymentType([AccountName],[Type],[CreatedOn],[UpdatedOn],[IsDeleted]) VALUES ('BOB','Bank',GETDATE(),GETDATE(),0);

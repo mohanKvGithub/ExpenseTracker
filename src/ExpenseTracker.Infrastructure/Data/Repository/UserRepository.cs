@@ -8,6 +8,6 @@ public class UserRepository(ApplicationDbContext db):IUserRepository
 {
     public async Task<User> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
     {
-        return await db.User.Where(x => !x.IsDeleted && email.Equals(x.Email)).FirstAsync();
+        return await db.User.Where(x => !x.IsDeleted && email.Equals(x.Email)).FirstOrDefaultAsync();
     }
 }

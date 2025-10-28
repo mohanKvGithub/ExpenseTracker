@@ -22,7 +22,7 @@ public class UserService(IUserRepository userRepository,IHttpContextAccessor htt
             return new ServiceResponseDto<string> { IsSuccess = false, Message = "Invalid Password"};
 
         await GenerateToken(user.Name,user.Id);
-        return new ServiceResponseDto<string> { IsSuccess = false, Message = "Valid User"};
+        return new ServiceResponseDto<string> { IsSuccess = true, Message = "Valid User"};
     }
     public async Task GenerateToken(string userName, int id)
     {
@@ -31,7 +31,7 @@ public class UserService(IUserRepository userRepository,IHttpContextAccessor htt
             {
                 new(ClaimTypes.Role, "Admin"),
                 new(ClaimTypes.Name, userName),
-                new("EmployeeId",$"{id}"),
+                new("UserId",$"{id}"),
             };
 
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

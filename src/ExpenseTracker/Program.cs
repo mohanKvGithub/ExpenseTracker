@@ -1,17 +1,22 @@
 using ExpenseTracker.Application.DTO;
 using ExpenseTracker.Extension;
+using ExpenseTracker.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
 var appSettings = builder.Configuration.GetSection("AppSettings").Get<AppSettingDto>();
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddSqlServer(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddRepositoryServices();
 builder.Services.AddAuthentication(builder.Configuration,appSettings);
 builder.Services.AddApplicationServices();
+builder.Services.AddControllers().AddJsonOptions(o=>
+{
+    o.JsonSerializerOptions.PropertyNamingPolicy = null;
+});
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -19,7 +24,7 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
-
+app.UseMiddleware<ExceptionMiddlware>();
 app.UseHttpsRedirection();
 app.UseRouting();
 
